@@ -1,0 +1,367 @@
+/* --- FUENTES --- */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap');
+
+/* --- RESET & BODY --- */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Nunito', sans-serif;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+/* --- TODOS LOS TITULOS --- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Nunito', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- HEADER GENERAL --- */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* logo/título a la izq, botones a la der */
+    background-color: #D9928A;
+    padding: 15px 25px;
+    font-family: 'Nunito', sans-serif;
+    color: white;
+    /* aseguramos que todo el header tenga texto blanco */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* --- LOGO + TÍTULO JUNTOS --- */
+.header-logo-title {
+    display: flex;
+    align-items: center;
+    /* centra verticalmente el h1 con el logo */
+    gap: 10px;
+    /* separación entre logo y título */
+}
+
+/* --- LOGO --- */
+.header-logo-title img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    /* opcional, si querés logo redondo */
+    object-fit: cover;
+}
+
+/* --- TÍTULO PRINCIPAL --- */
+.header-logo-title h1 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 1.8rem;
+    color: white;
+    /* forzamos blanco */
+    margin: 0;
+}
+
+/* --- HERO SECTION --- */
+.hero-section {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    padding: 120px 0 35px;
+    gap: 15px;
+    text-align: center;
+    background-color: #E9B1A5;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 0;
+}
+
+.hero-section h2 {
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: #fff;
+}
+
+.hero-section .nav-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.hero-section .nav-buttons button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #D9928A;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.hero-section .nav-buttons button:hover {
+    background-color: #f0f0f0;
+}
+
+.hero-section .nav-buttons button.active {
+    background-color: #D9928A;
+    color: #fff;
+}
+
+.hero-section .horarios {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #fff;
+}
+
+/* --- SECCIÓN DE SERVICIOS --- */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #D9928A;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+h3::before {
+    content: "💅 ";
+}
+
+.container p {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+/* Grid de servicios */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.grid div {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.grid div:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.grid h4 {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.grid p {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+/* Botón Reservar */
+button {
+    cursor: pointer;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+}
+
+button.mt-2 {
+    margin-top: 10px;
+    background-color: #DAB548;
+    color: #333;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+button.mt-2:hover {
+    background-color: #e5c65a;
+    transform: scale(1.05);
+}
+
+/* --- MODAL DE FORMULARIO --- */
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: 2000;
+}
+
+.modal-content {
+    background-color: #FFF8F5;
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 450px;
+    position: relative;
+    text-align: center;
+}
+
+.modal-content h3 {
+    color: #D9928A;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.modal-content input,
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-family: 'Nunito', sans-serif;
+}
+
+.modal-content button[type="submit"] {
+    background-color: #D9B036;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.modal-content button[type="submit"]:hover {
+    background-color: #B8922C;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 22px;
+    color: #D9928A;
+    cursor: pointer;
+}
+
+/* --- MIS TURNOS --- */
+section.mt-8 {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+section.mt-8 h3 {
+    color: #D9928A;
+    font-weight: 600;
+}
+
+section.mt-8 div.border {
+    background-color: #FFF8F8;
+    border: 1px solid #F1D1D1;
+    border-radius: 8px;
+    padding: 15px;
+    transition: transform 0.2s ease;
+}
+
+section.mt-8 div.border:hover {
+    transform: translateY(-3px);
+}
+
+/* Botón eliminar */
+button.bg-red-500 {
+    background-color: #E57373;
+    color: #fff;
+    border-radius: 5px;
+    padding: 6px 12px;
+    transition: background-color 0.2s ease;
+}
+
+button.bg-red-500:hover {
+    background-color: #c23b3b;
+}
+
+/* --- FOOTER --- */
+footer {
+    background-color: #D9928A;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin-top: 40px;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+footer button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #D9928A;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .header-logo-title h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero-section {
+        padding: 100px 0 35px;
+    }
+
+    .hero-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        padding: 20px;
+    }
+
+    footer {
+        font-size: 0.8rem;
+    }
+}

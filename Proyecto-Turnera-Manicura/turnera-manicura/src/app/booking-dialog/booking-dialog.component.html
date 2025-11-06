@@ -1,0 +1,44 @@
+<!-- Contenedor que oscurece el fondo cuando el cuadro de diálogo está activo -->
+<div class="dialog-backdrop">
+  
+  <!-- Tarjeta (card) central donde se muestra el formulario de reserva -->
+  <div class="dialog-card">
+    
+    <!-- Título dinámico que muestra el nombre del servicio seleccionado -->
+    <h2>Reservar turno - {{ turno.servicio }}</h2>
+
+    <!-- Campo para ingresar el nombre del cliente -->
+    <label>Nombre:</label>
+    <!-- Enlaza el valor del input con la propiedad 'nombre' del objeto 'turno' -->
+    <input [(ngModel)]="turno.nombre" />
+
+    <!-- Campo para ingresar el apellido del cliente -->
+    <label>Apellido:</label>
+    <!-- Enlace bidireccional con 'turno.apellido' -->
+    <input [(ngModel)]="turno.apellido" />
+
+    <!-- Campo para seleccionar la fecha del turno -->
+    <label>Fecha:</label>
+    <!-- Usa el tipo 'date' y enlaza con 'turno.fecha' -->
+    <input type="date" [(ngModel)]="turno.fecha" />
+
+    <!-- Campo para seleccionar la hora del turno -->
+    <label>Hora:</label>
+    <!-- Usa el tipo 'time' y enlaza con 'turno.hora' -->
+    <input type="time" [(ngModel)]="turno.hora" />
+
+    <!-- Campo para indicar con quién será el turno (por ejemplo, un profesional) -->
+    <label>Con quién:</label>
+    <!-- Enlace bidireccional con 'turno.conQuien' -->
+    <input [(ngModel)]="turno.conQuien" />
+
+    <!-- Contenedor para los botones de acción -->
+    <div class="mt-4 flex justify-end gap-2">
+      <!-- Botón para confirmar la reserva; ejecuta la función 'submit()' -->
+      <button (click)="submit()" class="reservar-turno">Confirmar</button>
+      
+      <!-- Botón para cancelar y cerrar el diálogo; emite el evento 'close' -->
+      <button (click)="close.emit()" class="secondary-button">Cancelar</button>
+    </div>
+  </div>
+</div>

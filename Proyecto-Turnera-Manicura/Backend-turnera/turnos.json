@@ -1,0 +1,47 @@
+[
+  {
+    "nombre": "Camila",
+    "apellido": "Sanchez",
+    "fecha": "2025-10-22",
+    "hora": "15:30",
+    "servicio": "Esmaltado semipermanente",
+    "conQuien": "Flor",
+    "id": 1
+  },
+  {
+    "nombre": "Camila",
+    "apellido": "Sanchez",
+    "fecha": "2025-10-22",
+    "hora": "15:30",
+    "servicio": "Esmaltado semipermanente",
+    "conQuien": "Flor",
+    "id": 2
+  },
+  {
+    "nombre": "Mariana",
+    "apellido": "Lopez",
+    "fecha": "2025-10-23",
+    "hora": "11:00",
+    "servicio": "Manicura + diseño",
+    "conQuien": "Lola",
+    "id": 3
+  },
+  {
+    "nombre": "Sofia",
+    "apellido": "Gomez",
+    "fecha": "2025-10-24",
+    "hora": "13:00",
+    "servicio": "Pedicura",
+    "conQuien": "Flor",
+    "id": 4
+  },
+  {
+    "nombre": "Ana",
+    "apellido": "Martinez",
+    "fecha": "2025-10-25",
+    "hora": "16:00",
+    "servicio": "Esmaltado semipermanente",
+    "conQuien": "Lola",
+    "id": 5
+  }
+]

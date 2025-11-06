@@ -1,0 +1,132 @@
+<!-- HEADER -->
+<header class="header">
+    <div class="header-logo-title">
+        <img src="assets/logo.jpg" alt="Logo del sitio">
+        <h1>Flower Nail Beauty</h1>
+    </div>
+</header>
+
+<!-- HERO SECTION -->
+<section [style.background]="colors.primaryDark" class="text-white p-8 text-center hero-section">
+    <h2 class="text-2xl md:text-4xl font-semibold">Reserva tu turno online</h2>
+
+    <!-- Botones tabs -->
+    <div class="nav-buttons">
+        <button (click)="activeTab='servicios'" [class.active]="activeTab==='servicios'">Servicios</button>
+        <button (click)="activeTab='misTurnos'" [class.active]="activeTab==='misTurnos'">
+            Mis Turnos ({{ turnos.length }})
+        </button>
+    </div>
+
+    <!-- Horarios -->
+    <div class="horarios">
+        Horarios: 09:00 - 20:00
+    </div>
+</section>
+
+<!-- SERVICIOS -->
+<section class="container mx-auto p-4" *ngIf="activeTab==='servicios'">
+    <h3 class="text-lg font-semibold mb-4">💅 Servicios Disponibles</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <!-- Servicio 1 -->
+        <div class="border p-4 rounded shadow" [style.background-color]="colors.light">
+            <img src="assets/imagenes/imagen1.jpg" alt="Manicura" class="service-img">
+            <h4 class="font-bold mt-2">{{ services[0].name }}</h4>
+            <p>{{ services[0].duration }} - {{ services[0].price }}</p>
+            <button class="mt-2 px-4 py-2 rounded text-white"
+                [style.background-color]="colors.secondary"
+                (mouseenter)="hoverEnter($event)"
+                (mouseleave)="hoverLeave($event)"
+                (click)="abrirModal(services[0].name)">
+                Reservar
+            </button>
+        </div>
+
+        <!-- Servicio 2 -->
+        <div class="border p-4 rounded shadow" [style.background-color]="colors.light">
+            <img src="assets/imagenes/imagen2.jpg" alt="Pedicura" class="service-img">
+            <h4 class="font-bold mt-2">{{ services[1].name }}</h4>
+            <p>{{ services[1].duration }} - {{ services[1].price }}</p>
+            <button class="mt-2 px-4 py-2 rounded text-white"
+                [style.background-color]="colors.secondary"
+                (mouseenter)="hoverEnter($event)"
+                (mouseleave)="hoverLeave($event)"
+                (click)="abrirModal(services[1].name)">
+                Reservar
+            </button>
+        </div>
+
+        <!-- Servicio 3 -->
+        <div class="border p-4 rounded shadow" [style.background-color]="colors.light">
+            <img src="assets/imagenes/imagen3.jpg" alt="Combo" class="service-img">
+            <h4 class="font-bold mt-2">{{ services[2].name }}</h4>
+            <p>{{ services[2].duration }} - {{ services[2].price }}</p>
+            <button class="mt-2 px-4 py-2 rounded text-white"
+                [style.background-color]="colors.secondary"
+                (mouseenter)="hoverEnter($event)"
+                (mouseleave)="hoverLeave($event)"
+                (click)="abrirModal(services[2].name)">
+                Reservar
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<!-- MIS TURNOS -->
+<section class="container mx-auto p-4 mt-8" *ngIf="activeTab==='misTurnos'">
+    <h3 class="text-lg font-semibold mb-4">Mis Turnos ({{ turnos.length }})</h3>
+
+    <div *ngIf="turnos.length === 0" class="text-center p-4">
+        <p>No tienes turnos agendados</p>
+    </div>
+
+    <div *ngFor="let turno of turnos"
+         class="border p-4 mb-2 rounded shadow"
+         [style.background-color]="colors.lighter">
+        <h4>{{ turno.servicio }}</h4>
+        <p>
+            {{ turno.nombre }} {{ turno.apellido }} -
+            {{ turno.fecha | date:'shortDate' }} {{ turno.hora }}
+            con {{ turno.conQuien }}
+        </p>
+        <button (click)="deleteTurno(turno.id)"
+                class="bg-red-500 text-white px-2 py-1 rounded">
+            Eliminar
+        </button>
+    </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+        <span class="close" (click)="closeModal()">&times;</span>
+        <h3>Reservar turno para {{ servicioSeleccionado }}</h3>
+
+        <form #formTurno="ngForm" (ngSubmit)="reservarTurno(formTurno)">
+            <input type="text" name="nombre" ngModel placeholder="Nombre" required>
+            <input type="text" name="apellido" ngModel placeholder="Apellido" required>
+            <input type="date" name="fecha" ngModel required>
+            <input type="time" name="hora" ngModel required>
+
+            <select name="conQuien" ngModel required>
+                <option value="">Selecciona profesional</option>
+                <option value="Ana">Ana</option>
+                <option value="María">María</option>
+                <option value="Sofía">Sofía</option>
+            </select>
+
+            <button type="submit" [disabled]="!formTurno.form.valid">Confirmar</button>
+        </form>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer [style.background-color]="colors.primary" class="text-white text-center p-4 mt-8">
+    <p>Belleza y elegancia en cada detalle</p>
+    <button class="mt-2 px-4 py-2 rounded bg-yellow-400 text-black font-bold hover:bg-yellow-500 transition">
+        Descargar
+    </button>
+    <p>© 2025 Flower Nail Beauty. Todos los derechos reservados.</p>
+</footer>
