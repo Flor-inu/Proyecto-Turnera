@@ -1,32 +1,32 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+
 // 1. 🟢 Importar CORS para permitir comunicación con Angular
-/// 1. 🟢 Importar CORS para permitir comunicación con Angular
 const cors = require('cors'); 
 const app = express();
 
-// Obtener la URL permitida desde las Variables de Entorno de Render
+// OBTENER ORIGEN PERMITIDO desde las Variables de Entorno de Render
 const allowedOrigin = process.env.CORS_ORIGIN || 'http://localhost:4200'; // Fallback para desarrollo
 
 const corsOptions = {
     origin: allowedOrigin,
-    optionsSuccessStatus: 200 // Para navegadores antiguos
+    optionsSuccessStatus: 200
 };
 
 // 2. 🟢 MIDDLEWARES
-app.use(cors(corsOptions)); // <-- Usa la configuración restringida
+app.use(cors(corsOptions)); // Usa la configuración restringida y segura
 app.use(express.json());
+
 // Nombre del archivo de "base de datos"
-const DB_FILE = 'turnos.json';
+const DB_FILE = 'turnos.json'; 
 
-// --- Funciones de Utilidad para Manejo de Archivos ---
+// --- Funciones de Utilidad para Manejo de Archivos (Mantenidas) ---
 
-// Función para leer el archivo de forma segura
 const leerTurnos = () => {
     try {
         if (!fs.existsSync(DB_FILE)) {
-            // Si el archivo no existe, crea uno vacío
+            // El archivo ya debería existir en Render, pero esta línea es de seguridad
             fs.writeFileSync(DB_FILE, '[]', 'utf-8'); 
             return [];
         }
@@ -38,7 +38,6 @@ const leerTurnos = () => {
     }
 };
 
-// Función para escribir el archivo
 const escribirTurnos = (turnos) => {
     try {
         fs.writeFileSync(DB_FILE, JSON.stringify(turnos, null, 2), 'utf-8');
@@ -104,10 +103,9 @@ app.delete('/api/turnos/:id', (req, res) => {
     }
 });
 
-// -------------------- 🌐 SERVIR FRONTEND --------------------
-// Nota: Ajusté la ruta de Angular. Verifica que la ruta 'turnera-manicura/dist/turnera-manicura' sea correcta.
-
-const DIST_PATH = path.join(__dirname, 'turnera-manicura/dist/turnera-manicura');
+// -------------------- 🌐 SERVIR FRONTEND (CORRECCIÓN DE RUTA CLAVE) --------------------
+// CRÍTICO: Se utiliza '..' para subir un nivel desde Backend-turnera y encontrar turnera-manicura
+const DIST_PATH = path.join(__dirname, '..', 'turnera-manicura', 'dist', 'turnera-manicura');
 
 if (fs.existsSync(DIST_PATH)) {
     app.use(express.static(DIST_PATH));
@@ -120,7 +118,7 @@ if (fs.existsSync(DIST_PATH)) {
     });
 } else {
     app.get('/', (req, res) => {
-        res.send('Backend API funcionando. Faltan archivos estáticos del frontend.');
+        res.send('Backend API funcionando. Faltan archivos estáticos del frontend. Ejecuta el Build Command en Render.');
     });
 }
 
