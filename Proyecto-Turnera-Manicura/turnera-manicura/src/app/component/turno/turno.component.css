@@ -30,12 +30,10 @@ h6 {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* logo/título a la izq, botones a la der */
     background-color: #D9928A;
     padding: 15px 25px;
     font-family: 'Nunito', sans-serif;
     color: white;
-    /* aseguramos que todo el header tenga texto blanco */
     position: fixed;
     top: 0;
     left: 0;
@@ -47,9 +45,7 @@ h6 {
 .header-logo-title {
     display: flex;
     align-items: center;
-    /* centra verticalmente el h1 con el logo */
     gap: 10px;
-    /* separación entre logo y título */
 }
 
 /* --- LOGO --- */
@@ -57,7 +53,6 @@ h6 {
     width: 55px;
     height: 55px;
     border-radius: 50%;
-    /* opcional, si querés logo redondo */
     object-fit: cover;
 }
 
@@ -67,7 +62,6 @@ h6 {
     font-weight: 600;
     font-size: 1.8rem;
     color: white;
-    /* forzamos blanco */
     margin: 0;
 }
 
@@ -184,6 +178,21 @@ h3::before {
 .grid p {
     color: #666;
     margin-bottom: 10px;
+}
+
+/* --- IMÁGENES DE SERVICIOS --- */
+.service-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.service-img:hover {
+    transform: scale(1.03);
 }
 
 /* Botón Reservar */

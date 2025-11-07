@@ -5,16 +5,16 @@ import { NgForm } from '@angular/forms';
 import { Turno } from '../../model/turno';
 
 @Component({
-  selector: 'app-turno',                 // ✅ CORREGIDO: Selector correcto
-  templateUrl: './turno.component.html',  // ✅ CORREGIDO: Template correcto
+  selector: 'app-turno',                
+  templateUrl: './turno.component.html',  
   styleUrls: ['./turno.component.css']   
 })
-export class TurnoComponent implements OnInit { // ✅ NOMBRE DE CLASE CORREGIDO
+export class TurnoComponent implements OnInit { 
 
-  // === VARIABLES DE ESTADO AGREGADAS (Resuelve errores TS2339) ===
-  activeTab: 'servicios' | 'misTurnos' = 'servicios'; // Controla la pestaña
-  showModal: boolean = false; // Visibilidad del modal
-  servicioSeleccionado: string = ''; // Servicio seleccionado
+  // === VARIABLES DE ESTADO AGREGADAS
+  activeTab: 'servicios' | 'misTurnos' = 'servicios'
+  showModal: boolean = false; 
+  servicioSeleccionado: string = '';
   
   // Título, Colores, Servicios (contenido existente)
   title = 'Flower Nail Beauty';
@@ -33,13 +33,13 @@ services = [
 
   turnos: Turno[] = [];
 
-  // ✅ Variable agregada para manejar el evento de instalación PWA
+  // Variable agregada para manejar el evento de instalación PWA
   private deferredPrompt: any;
 
   constructor() { }
 
   ngOnInit(): void {
-    // ✅ Escucha el evento "beforeinstallprompt"
+    // Escucha el evento "beforeinstallprompt"
     // Este evento se dispara cuando la app puede ser instalada (solo en navegadores compatibles)
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();             // Previene que se muestre automáticamente
@@ -65,19 +65,19 @@ services = [
       return;
     }
     
-    // ✅ Mapeo final que coincide con el modelo corregido
+    // Mapeo final que coincide con el modelo corregido
     const nuevoTurno: Turno = {
       id: Math.random().toString(36).substring(2, 9), 
       servicio: this.servicioSeleccionado,
       nombre: form.value.name,
-      telefono: form.value.phone, // ✅ Ahora existe en el modelo
+      telefono: form.value.phone, // Ahora existe en el modelo
       
       // Campos que se inician o provienen del formulario:
       apellido: '',                  
       fecha: form.value.date,        
       hora: form.value.time,         
       conQuien: '',                  
-      status: 'pending'              // ✅ Ahora existe en el modelo
+      status: 'pending'              // Ahora existe en el modelo
     };
 
     this.turnos.push(nuevoTurno);
@@ -101,7 +101,7 @@ services = [
     (event.target as HTMLElement).style.backgroundColor = this.colors.secondary;
   }
 
-  // ✅ Método que dispara la instalación de la app
+  // Método que dispara la instalación de la app
   // Este método se llama cuando el usuario toca el botón “Descargar”
   instalarApp(): void {
     if (this.deferredPrompt) {
