@@ -1,23 +1,23 @@
-// src/app/app.module.ts
-
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-// 1. Importa este módulo
 import { HttpClientModule } from '@angular/common/http'; 
+import { FormsModule } from '@angular/forms'; // Módulo necesario si utilizas ngModel u otras directivas de formularios
 
 import { AppComponent } from './app.component';
-// Importa tus componentes si los tienes
-// import { TurnosComponent } from './turnos/turnos.component'; 
+
+// CLAVE: Importa la clase del componente que tu HTML (app.component.html) está usando.
+// La ruta es: ./component.turno/turno.component.ts
+import { TurnoComponentent } from './component/turno/turno.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    // TurnosComponent 
+    TurnoComponentent // <-- DECLARACIÓN QUE HACE VISIBLE A <app-turno>
   ],
-  // 2. Agrega HttpClientModule a los imports
   imports: [
     BrowserModule,
-    HttpClientModule 
+    HttpClientModule,
+    FormsModule 
   ],
   providers: [],
   bootstrap: [AppComponent]

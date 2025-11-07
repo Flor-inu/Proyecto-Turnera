@@ -12,7 +12,7 @@ import { Turno } from '../../model/turno';
   templateUrl: './app.component.html',   // Archivo HTML asociado
   styleUrls: ['./app.component.css']     // Archivo CSS asociado
 })
-export class AppComponent {
+export class TurnoComponentent {
   // Título de la aplicación
   title = 'Flower Nail Beauty';
 
