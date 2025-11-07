@@ -5,13 +5,13 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 
-// ✅ CORREGIDO: Ruta anidada y TurnoComponent
-import { TurnoComponentent } from './component/turno/turno.component'; 
+// ✅ Ruta Correcta y Nombre Correcto
+import { TurnoComponent } from './component/turno/turno.component'; 
 
 @NgModule({
   declarations: [
     AppComponent,
-    TurnoComponentent // ✅ CORREGIDO: Nombre de la clase (quitado 'ent')
+    TurnoComponent // ✅ CORREGIDO: Ya no es TurnoComponentent
   ],
   imports: [
     BrowserModule,
