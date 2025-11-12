@@ -86,7 +86,7 @@ export class TurnoComponent implements OnInit {
     );
 
     if (turnoExistente) {
-      alert('⚠️ Este turno ya está reservado.');
+      alert('⚠️ Este turno ya está reservado. ⚠️');
       return;
     }
 

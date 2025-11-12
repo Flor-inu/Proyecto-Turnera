@@ -2,8 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap');
 
 /* --- RESET & BODY --- */
-html,
-body {
+html,body {
     margin: 0;
     padding: 0;
     width: 100%;
@@ -17,12 +16,7 @@ body {
 }
 
 /* --- TITULOS --- */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1,h2,h3,h4,h5,h6 {
     font-family: 'Nunito', sans-serif;
     margin: 0;
     padding: 0;
@@ -144,7 +138,7 @@ h3::before {
     color: #555;
 }
 
-/* Grid de servicios */
+/* GRID de servicios */
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -417,7 +411,6 @@ footer button:hover {
     }
 }
 
-/* --- AJUSTE FINAL: evitar sombra cuando el hover viene del botón --- */
 .card:hover:not(:has(button:hover)) {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
