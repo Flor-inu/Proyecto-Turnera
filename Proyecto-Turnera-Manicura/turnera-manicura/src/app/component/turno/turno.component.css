@@ -216,6 +216,79 @@ button.mt-2:hover {
     transform: scale(1.05);
 }
 
+/* --- MODAL --- */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    position: relative;
+}
+
+.modal-content h3 {
+    margin-bottom: 15px;
+    color: #D9928A;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-content input,
+.modal-content select {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-family: 'Nunito', sans-serif;
+    outline: none;
+}
+
+.modal-content button[type="submit"] {
+    background-color: #D9928A;
+    color: white;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    transition: 0.2s;
+}
+
+.modal-content button[type="submit"]:hover {
+    background-color: #c78075;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close:hover {
+    color: #D9928A;
+}
+
 /* --- FOOTER --- */
 footer {
     background-color: #D9928A;
