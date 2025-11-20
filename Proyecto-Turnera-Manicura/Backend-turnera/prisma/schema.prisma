@@ -1,0 +1,30 @@
+// 1. Configuración del generador y la fuente de datos
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// 2. Modelo de Turnos (Basado en tu SQL original)
+model Turno {
+  id        String   @id @default(uuid()) @db.VarChar(50)
+  nombre    String   @db.VarChar(100)
+  apellido  String   @db.VarChar(100)
+  // Usamos DateTime para fecha, Prisma lo mapea a DATE o DATETIME en MySQL
+  fecha     DateTime @db.Date 
+  hora      String   @db.VarChar(10)
+  servicio  String   @db.VarChar(100)
+  conQuien  String   @db.VarChar(100)
+  telefono  String   @db.VarChar(20)
+  status    String   @db.VarChar(50)
+
+  // Campos opcionales de auditoría
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("turnos") // Mapea este modelo a la tabla 'turnos' en la BD
+}

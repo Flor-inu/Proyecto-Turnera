@@ -1,128 +1,146 @@
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
+const cors = require('cors');
+const { PrismaClient } = require('@prisma/client');
 
-// 1. 🟢 Importar CORS para permitir comunicación con Angular
-const cors = require('cors'); 
+// --- 1. CONFIGURACIÓN E INICIALIZACIÓN ---
 const app = express();
+const prisma = new PrismaClient();
 
-// OBTENER ORIGEN PERMITIDO desde las Variables de Entorno de Render
-const allowedOrigin = process.env.CORS_ORIGIN || 'http://localhost:4200'; // Fallback para desarrollo
+// Obtener puerto y origen desde variables de entorno
+const PORT = process.env.PORT || 8080;
+const allowedOrigin = process.env.CORS_ORIGIN || 'http://localhost:4200';
 
 const corsOptions = {
     origin: allowedOrigin,
     optionsSuccessStatus: 200
 };
 
-// 2. 🟢 MIDDLEWARES
-app.use(cors(corsOptions)); // Usa la configuración restringida y segura
+// Middlewares
+app.use(cors(corsOptions));
 app.use(express.json());
 
-// Nombre del archivo de "base de datos"
-const DB_FILE = 'turnos.json'; 
-
-// --- Funciones de Utilidad para Manejo de Archivos (Mantenidas) ---
-
-const leerTurnos = () => {
-    try {
-        if (!fs.existsSync(DB_FILE)) {
-            // El archivo ya debería existir en Render, pero esta línea es de seguridad
-            fs.writeFileSync(DB_FILE, '[]', 'utf-8'); 
-            return [];
-        }
-        const data = fs.readFileSync(DB_FILE, 'utf-8');
-        return JSON.parse(data);
-    } catch (error) {
-        console.error('Error al leer el archivo de turnos:', error);
-        return [];
-    }
-};
-
-const escribirTurnos = (turnos) => {
-    try {
-        fs.writeFileSync(DB_FILE, JSON.stringify(turnos, null, 2), 'utf-8');
-    } catch (error) {
-        console.error('Error al escribir el archivo de turnos:', error);
-    }
-};
-
-// -------------------- 📦 RUTAS API (CRUD COMPLETO) --------------------
+// --- 2. RUTAS API (CRUD CON PRISMA) ---
 
 // 📘 GET: Obtener todos los turnos
-app.get('/api/turnos', (req, res) => {
-    res.json(leerTurnos());
+app.get('/api/turnos', async (req, res) => {
+    try {
+        const turnos = await prisma.turno.findMany({
+            orderBy: {
+                fecha: 'asc', // Ordenar por fecha ascendente
+            }
+        });
+        res.json(turnos);
+    } catch (error) {
+        console.error('Error al obtener turnos:', error);
+        res.status(500).json({ error: 'Error interno al obtener los turnos' });
+    }
 });
 
 // ➕ POST: Agregar un turno
-app.post('/api/turnos', (req, res) => {
-    const turnos = leerTurnos();
-    const nuevoTurno = req.body;
-    
-    // Asignar un ID simple
-    const ultimoId = turnos.length > 0 ? turnos[turnos.length - 1].id : 0;
-    nuevoTurno.id = ultimoId + 1;
+app.post('/api/turnos', async (req, res) => {
+    try {
+        const { nombre, apellido, fecha, hora, servicio, conQuien, telefono, status } = req.body;
 
-    turnos.push(nuevoTurno);
-    escribirTurnos(turnos);
+        // Validación simple de datos requeridos
+        if (!nombre || !fecha || !hora) {
+            return res.status(400).json({ error: 'Faltan datos obligatorios (nombre, fecha, hora)' });
+        }
 
-    // 🟢 Importante: Devolver el objeto creado con su ID
-    res.status(201).json(nuevoTurno); 
+        const nuevoTurno = await prisma.turno.create({
+            data: {
+                nombre,
+                apellido,
+                // Asegurarse de que la fecha sea un objeto Date compatible con Prisma
+                fecha: new Date(fecha), 
+                hora,
+                servicio,
+                conQuien,
+                telefono,
+                status
+            }
+        });
+        
+        res.status(201).json(nuevoTurno);
+    } catch (error) {
+        console.error('Error al crear turno:', error);
+        res.status(500).json({ error: 'Error al guardar el turno en la base de datos' });
+    }
 });
 
 // ✏️ PUT: Modificar un turno
-app.put('/api/turnos/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    const turnos = leerTurnos();
-    const index = turnos.findIndex(t => t.id === id);
+app.put('/api/turnos/:id', async (req, res) => {
+    const { id } = req.params;
+    const data = req.body;
 
-    if (index !== -1) {
-        const turnoActualizado = req.body;
-        turnoActualizado.id = id;
-        turnos[index] = turnoActualizado;
-        escribirTurnos(turnos);
+    try {
+        // Si viene fecha en el body, la convertimos a Date object
+        if (data.fecha) {
+            data.fecha = new Date(data.fecha);
+        }
+
+        // Eliminamos el ID del body para evitar errores de Prisma (el ID no se debe actualizar)
+        delete data.id;
+
+        const turnoActualizado = await prisma.turno.update({
+            where: { id: id },
+            data: data
+        });
+
         res.json({ mensaje: `Turno ID ${id} actualizado.`, turno: turnoActualizado });
-    } else {
-        res.status(404).json({ mensaje: `Turno ID ${id} no encontrado.` });
+    } catch (error) {
+        // Prisma lanza error código 'P2025' si no encuentra el registro
+        if (error.code === 'P2025') {
+            return res.status(404).json({ mensaje: `Turno ID ${id} no encontrado.` });
+        }
+        console.error('Error al actualizar turno:', error);
+        res.status(500).json({ error: 'Error interno al actualizar' });
     }
 });
 
 // ❌ DELETE: Eliminar un turno
-app.delete('/api/turnos/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    let turnos = leerTurnos();
-    const longitudInicial = turnos.length;
-    
-    // Filtra el array, dejando solo los turnos cuyo ID no coincida
-    turnos = turnos.filter(t => t.id !== id);
+app.delete('/api/turnos/:id', async (req, res) => {
+    const { id } = req.params;
 
-    if (turnos.length < longitudInicial) {
-        escribirTurnos(turnos);
+    try {
+        await prisma.turno.delete({
+            where: { id: id }
+        });
         res.json({ mensaje: `Turno ID ${id} eliminado correctamente.` });
-    } else {
-        res.status(404).json({ mensaje: `Turno ID ${id} no encontrado.` });
+    } catch (error) {
+        if (error.code === 'P2025') {
+            return res.status(404).json({ mensaje: `Turno ID ${id} no encontrado.` });
+        }
+        console.error('Error al eliminar turno:', error);
+        res.status(500).json({ error: 'Error interno al eliminar' });
     }
 });
 
-// -------------------- 🌐 SERVIR FRONTEND (CORRECCIÓN DE RUTA CLAVE) --------------------
-// CRÍTICO: Se utiliza '..' para subir un nivel desde Backend-turnera y encontrar turnera-manicura
+// -------------------- 🌐 SERVIR FRONTEND (ANGULAR) --------------------
+// Ruta relativa al directorio donde se ejecuta el script
 const DIST_PATH = path.join(__dirname, '..', 'turnera-manicura', 'dist', 'turnera-manicura');
 
-if (fs.existsSync(DIST_PATH)) {
+if (require('fs').existsSync(DIST_PATH)) {
     app.use(express.static(DIST_PATH));
 
+    // Redirigir cualquier ruta que no sea API al index.html (SPA)
     app.get('*', (req, res) => {
-        // Asegura que la petición no sea para una ruta de la API
         if (!req.url.startsWith('/api')) { 
              res.sendFile(path.join(DIST_PATH, 'index.html'));
         }
     });
 } else {
+    // Ruta por defecto si no existe el build de Angular
     app.get('/', (req, res) => {
-        res.send('Backend API funcionando. Faltan archivos estáticos del frontend. Ejecuta el Build Command en Render.');
+        res.send(`
+            <h1>API Backend Activa (Modo DB)</h1>
+            <p>El frontend no fue encontrado en: ${DIST_PATH}</p>
+            <p>Asegúrate de ejecutar 'ng build' en la carpeta del frontend.</p>
+        `);
     });
 }
 
-
 // -------------------- 🚀 INICIAR SERVIDOR --------------------
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`🚀 Servidor corriendo en el puerto ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`🚀 Servidor con Prisma corriendo en el puerto ${PORT}`);
+});
